@@ -33,21 +33,18 @@
               <form id="formInicioSesion" class="mb-3" action="" method="POST">
                 
                 <div class="mb-3">
-                  <label for="email" class="form-label">Correo Electrónico</label>
-                  <input type="text" class="form-control" id="CorreoElectronico" name="CorreoElectronico" />
+                  <label for="NombreUsuario" class="form-label">Usuario</label>
+                  <input type="text" class="form-control" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su usuario" autofocus required />
                 </div>
 
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">Contraseña</label>
-                  <input type="password" class="form-control" id="Contrasenna" name="Contrasenna" />
-                  
-                  <div class="d-flex justify-content-end">
-                    <a href="RecuperarAcceso.php">
-                      <small>Olvidó su contraseña?</small>
-                    </a>
+                  <label class="form-label" for="Contrasenna">Contraseña</label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" class="form-control" id="Contrasenna" name="Contrasenna" placeholder="············" required />
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
                 </div>
-
+                
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" id="btnIniciarSesion" name="btnIniciarSesion" type="submit">Procesar</button>
                 </div>

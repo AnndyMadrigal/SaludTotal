@@ -1,26 +1,36 @@
 <?php
+// Define las credenciales y la cadena de conexión de Oracle
+define('ORACLE_USER', 'FIDE_SALUDTOTAL_BD'); // Reemplaza con tu usuario
+define('ORACLE_PASS', '123'); // Reemplaza con tu contraseña
+define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE', '192.168.1.10:1521/ORCL', o un nombre TNS
 
-    function OpenConnection()
-    {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        return mysqli_connect("127.0.0.1:3307", "root", "", "mn_bd");
+/**
+ * Establece una conexión a la base de datos Oracle.
+ *
+ * @return resource|false El identificador de conexión si tiene éxito, o false si falla.
+ */
+function OpenConnection()
+{
+    $conn = @oci_connect(ORACLE_USER, ORACLE_PASS, ORACLE_CONN_STRING);
+
+    if (!$conn) {
+        $e = oci_error(); 
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        return false;
     }
 
-    function CloseConnection($context)
-    {
-        mysqli_close($context);
-    }
+    return $conn;
+}
 
-    function SaveError($error)
-    {
-        $context = OpenConnection();
-
-        $mensaje = mysqli_real_escape_string($context, $error -> getMessage());
-
-        $sentencia = "CALL RegistrarError('$mensaje')";
-        $context -> query($sentencia);
-
-        CloseConnection($context);
-    }
-
+/**
+ * Cierra la conexión a la base de datos Oracle.
+ *
+ * @param resource $conn El identificador de conexión devuelto por OpenConnection().
+ * @return bool True si la desconexión fue exitosa.
+ */
+function CloseConnection($conn)
+{
+    // oci_close() libera la conexión a la base de datos.
+    return oci_close($conn);
+}
 ?>

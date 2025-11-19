@@ -25,60 +25,36 @@
         $_POST["Mensaje"] = "No se ha podido crear la cuenta solicitada";
     }
 
+    // Lógica de Iniciar Sesión
     if(isset($_POST["btnIniciarSesion"]))
     {
-        $correoElectronico = $_POST["CorreoElectronico"];
+        $usuario = $_POST["NombreUsuario"]; 
         $contrasenna = $_POST["Contrasenna"];
 
-        $resultado = ValidarCuentaModel($correoElectronico, $contrasenna);
+        // Llamamos al modelo
+        $datosUsuario = ValidarCuentaModel($usuario, $contrasenna);
 
-        if($resultado)
+        if($datosUsuario != null)
         {
-            $_SESSION["ConsecutivoUsuario"] = $resultado["ConsecutivoUsuario"];
-            $_SESSION["Nombre"] = $resultado["Nombre"];
-            $_SESSION["ConsecutivoPerfil"] = $resultado["ConsecutivoPerfil"];
-            $_SESSION["NombrePerfil"] = $resultado["NombrePerfil"];
+            // Guardamos datos en Sesión según tus columnas de Oracle
+            $_SESSION["IdUsuario"] = $datosUsuario["ID_USUARIO"];
+            $_SESSION["NombreUsuario"] = $datosUsuario["NOMBRE_USUARIO"];
+            $_SESSION["IdRol"] = $datosUsuario["ID_ROL_SISTEMA"];
+            
+            // Opcional: Guardar ID personal o paciente si existen
+            $_SESSION["IdPersonal"] = $datosUsuario["ID_PERSONAL"]; 
+            $_SESSION["IdPaciente"] = $datosUsuario["ID_PACIENTE"];
 
+            // Redirección
             header("Location: ../../View/Inicio/Principal.php");
             exit;
         }
-
-        $_POST["Mensaje"] = "No se ha podido validar la cuenta ingresada";
-    }
-
-    if(isset($_POST["btnRecuperarAcceso"]))
-    {
-        $correoElectronico = $_POST["CorreoElectronico"];
- 
-        $resultado = ValidarCorreoModel($correoElectronico);
-
-        if ($resultado)
+        else 
         {
-            //Generar contraseña aleatoria
-            $ContrasennaGenerada = GenerarContrasenna();
-
-            //Actualizar la contraseña actual
-            $resultadoActualizar = ActualizarContrasennaModel($resultado["ConsecutivoUsuario"], $ContrasennaGenerada);
-            
-            if($resultadoActualizar)
-            {
-                //Notificarle por correo la nueva contraseña
-                $mensaje = "<html><body>
-                Estimado(a) " . $resultado["Nombre"] . "<br><br>
-                Se ha generado la siguiente contraseña de acceso: <b>" . $ContrasennaGenerada . "</b><br>
-                Procure realizar el cambio de su contraseña una vez que ingrese al sistema.<br><br>
-                Muchas gracias.
-                </body></html>";
-
-                EnviarCorreo('Recuperar Acceso', $mensaje, $resultado["CorreoElectronico"]);
-
-                header("Location: ../../View/Inicio/IniciarSesion.php");
-                exit;
-            }
+            $_POST["Mensaje"] = "Usuario o contraseña incorrectos, o la cuenta está inactiva.";
         }
-
-        $_POST["Mensaje"] = "No se ha podido recuperar el acceso";
     }
+
 
     if(isset($_POST["btnSalir"]))
     {

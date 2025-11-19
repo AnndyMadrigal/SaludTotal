@@ -6,7 +6,7 @@
         session_start();
     }
 
-    if(!isset($_SESSION["Nombre"]))
+    if(!isset($_SESSION["NombreUsuario"]))
     {
       header("Location: ../../View/Inicio/IniciarSesion.php");
       exit;
@@ -52,9 +52,9 @@
     {
         $perfil = "";
 
-        if(isset($_SESSION["Nombre"]))
+        if(isset($_SESSION["NombreUsuario"]))
         {
-          $perfil = $_SESSION["ConsecutivoPerfil"];
+          $perfil = $_SESSION["ID_ROL_SISTEMA"];
         }
 
         echo '
@@ -108,10 +108,10 @@
         $nombre = "";
         $nombrePerfil = "";
 
-        if(isset($_SESSION["Nombre"]))
+        if(isset($_SESSION["NombreUsuario"]))
         {
-          $nombre = $_SESSION["Nombre"];
-          $nombrePerfil = $_SESSION["NombrePerfil"];
+          $nombre = $_SESSION["NombreUsuario"];
+          $rol = ($_SESSION["IdRol"]==1) ? "Administrador" : "Usuario";
         }
 
         echo '
@@ -147,7 +147,7 @@
                       <a class="dropdown-item" href="#">
                         <div class="d-flex">
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block text-center">Perfil ' . $nombrePerfil . '</span>
+                            <span class="fw-semibold d-block text-center">Perfil ' . $rol . '</span>
                           </div>
                         </div>
                       </a>

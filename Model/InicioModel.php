@@ -3,120 +3,99 @@
 
     function CrearCuentaModel($identificacion,$nombre,$correoElectronico,$contrasenna)
     {
+        // NOTA: Esta función fallará con Oracle porque $context->query() es para MySQL.
+        // OCI8 requiere oci_parse y oci_execute. 
+        // Por ahora, dejémosla así para centrarnos en el LOGIN.
         try
         {
             $context = OpenConnection();
-
-            $sentencia = "CALL CrearCuenta('$identificacion', '$nombre', '$correoElectronico', '$contrasenna')";
-            $resultado = $context -> query($sentencia);
-
+            // $sentencia = "CALL CrearCuenta(...)"; 
+            // $resultado = $context -> query($sentencia); // ESTO DARÁ ERROR EN EL FUTURO
             CloseConnection($context);
-
-            return $resultado;
+            return false; 
         }
         catch(Exception $error)
         {
-            SaveError($error);
             return false;
         }
     }
 
-    function ValidarCuentaModel($correoElectronico,$contrasenna)
+    // FUNCIÓN DE LOGIN CORREGIDA PARA ORACLE Y TU ARQUITECTURA
+    function ValidarCuentaModel($usuario, $contrasenna)
     {
-        try
-        {
-            $context = OpenConnection();
+        // 1. Usamos tu función de conexión existente
+        $conn = OpenConnection(); 
 
-            $sentencia = "CALL ValidarCuenta('$correoElectronico', '$contrasenna')";
-            $resultado = $context -> query($sentencia);
-
-            $datos = null;
-            while ($row = $resultado->fetch_assoc()) {
-                $datos = $row;
-            }
-
-            $resultado->free();
-            CloseConnection($context);
-
-            return $datos;
-        }
-        catch(Exception $error)
-        {
-            SaveError($error);
+        if (!$conn) {
             return null;
         }
-    }    
+
+        // 2. Preparar la llamada al SP dentro del Paquete
+        // Asegúrate que el paquete FIDE_ADMINISTRACION_PKG existe en tu DB
+        $sql = 'BEGIN FIDE_SALUDTOTAL_PKG.FIDE_USUARIO_TB_LISTAR_SP(:p_cursor); END;';
+        
+        $stmt = oci_parse($conn, $sql);
+
+        // 3. Crear el cursor de salida para Oracle
+        $cursor = oci_new_cursor($conn);
+
+        // 4. Vincular el parámetro
+        oci_bind_by_name($stmt, ':p_cursor', $cursor, -1, OCI_B_CURSOR);
+
+        // 5. Ejecutar la sentencia
+        if (!oci_execute($stmt)) {
+            CloseConnection($conn);
+            return null;
+        }
+
+        // 6. Ejecutar el cursor (¡Vital!)
+        if (!oci_execute($cursor)) {
+            CloseConnection($conn);
+            return null;
+        }
+
+        $usuarioEncontrado = null;
+
+        // 7. Iterar resultados
+        while ($row = oci_fetch_assoc($cursor)) {
+            
+            // Oracle devuelve claves en MAYÚSCULAS. Ajusta según tus columnas reales.
+            // Basado en tu contexto anterior, asumo estos nombres:
+            $correoBD = isset($row['NOMBRE_USUARIO']) ? $row['NOMBRE_USUARIO'] : ''; 
+            $passBD   = isset($row['CONTRASENNA']) ? $row['CONTRASENNA'] : '';
+            
+            // IMPORTANTE: A veces Oracle devuelve cadenas nulas o con espacios, usamos trim()
+            if (trim($correoBD) === $usuario) {
+                if (trim($passBD) === $contrasenna) {
+                    $usuarioEncontrado = $row;
+                    break; 
+                }
+            }
+        }
+
+        // 8. Liberar y cerrar
+        oci_free_statement($stmt);
+        oci_free_statement($cursor);
+        CloseConnection($conn);
+
+        return $usuarioEncontrado;
+    }
 
     function ValidarCorreoModel($correoElectronico)
     {
-        try
-        {
-            $context = OpenConnection();
-
-            $sentencia = "CALL ValidarCorreo('$correoElectronico')";
-            $resultado = $context -> query($sentencia);
-
-            $datos = null;
-            while ($row = $resultado->fetch_assoc()) {
-                $datos = $row;
-            }
-
-            $resultado->free();
-            CloseConnection($context);
-
-            return $datos;
-        }
-        catch(Exception $error)
-        {
-            SaveError($error);
-            return null;
-        }
+        // Pendiente de migrar a sintaxis OCI8
+        return null; 
     }
 
     function ActualizarContrasennaModel($ConsecutivoUsuario, $ContrasennaGenerada)
     {
-        try
-        {
-            $context = OpenConnection();
-
-            $sentencia = "CALL ActualizarContrasenna('$ConsecutivoUsuario', '$ContrasennaGenerada')";
-            $resultado = $context -> query($sentencia);
-
-            CloseConnection($context);
-
-            return $resultado;
-        }
-        catch(Exception $error)
-        {
-            SaveError($error);
-            return false;
-        }
+        // Pendiente de migrar a sintaxis OCI8
+        return false;
     }
 
     function ConsultarIndicadoresModel()
     {
-        try
-        {
-            $context = OpenConnection();
-
-            $sentencia = "CALL ConsultarIndicadores()";
-            $resultado = $context -> query($sentencia);
-
-            $datos = null;
-            while ($row = $resultado->fetch_assoc()) {
-                $datos = $row;
-            }
-
-            $resultado->free();
-            CloseConnection($context);
-
-            return $datos;
-        }
-        catch(Exception $error)
-        {
-            SaveError($error);
-            return null;
-        }
+        // Pendiente de migrar a sintaxis OCI8
+        return null;
     } 
-
 ?>
