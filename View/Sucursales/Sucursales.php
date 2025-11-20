@@ -65,7 +65,7 @@
                                                                     value="<?= $fila['id_sucursal'] ?>">
                                                                 <input type="hidden" name="EstadoActual"
                                                                     value="<?= $fila['id_estado'] ?>">
-                                                                <button type="submit" name="btnCambiarEstado"
+                                                                <button type="submit" name="btnCambiarEstado" id="btnCambiarEstado"
                                                                     style="background:none; border:none; color:#0d6efd; cursor:pointer; padding:0;"
                                                                     title="Cambiar Estado (Activar/Desactivar)">
                                                                     <i class="fa fa-refresh"

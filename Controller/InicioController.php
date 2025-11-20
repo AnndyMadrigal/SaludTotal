@@ -1,5 +1,4 @@
 <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/UtilesController.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/InicioModel.php';
 
     if(session_status() == PHP_SESSION_NONE)
