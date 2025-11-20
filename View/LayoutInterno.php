@@ -18,7 +18,7 @@
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-          <title>Proyecto Web MN</title>
+          <title>Salud Total</title>
           <meta name="description" content="" />
 
           <link rel="stylesheet" href="../css/boxicons.css" />
@@ -52,9 +52,9 @@
     {
         $perfil = "";
 
-        if(isset($_SESSION["NombreUsuario"]))
+        if(isset($_SESSION["IdRol"])) 
         {
-          $perfil = $_SESSION["ID_ROL_SISTEMA"];
+          $perfil = $_SESSION["IdRol"];
         }
 
         echo '
@@ -62,7 +62,7 @@
           <div class="app-brand demo">
             <a href="../Inicio/Principal.php" class="app-brand-link">
               <img src="../img/logo.png">
-              <span class="app-brand-text demo menu-text fw-bolder ms-2">MN Web</span>
+              <span class="app-brand-text demo menu-text fw-bolder ms-2">Salud Total</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -77,24 +77,40 @@
             if($perfil == "1")
             {
               echo '
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Mantenimientos</span></li>
+                <li class="menu-header small text-uppercase">
+                  <span class="menu-header-text">Administración Hospitalaria</span>
+                </li>
 
                 <li class="menu-item">
-                  <a href="../Productos/Productos.php" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-box"></i>
-                    <div data-i18n="Analytics">Productos</div>
+                  <a href="../Sucursales/Sucursales.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-building-house"></i> 
+                    <div data-i18n="Sucursales">Sucursales</div>
+                  </a>
+                </li>
+
+                <li class="menu-item">
+                  <a href="../Usuarios/Usuarios.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user"></i> 
+                    <div data-i18n="Usuarios">Usuarios</div>
                   </a>
                 </li>';
             }
             else
             {
                echo '
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Compras</span></li>
+                <li class="menu-header small text-uppercase"><span class="menu-header-text">Mi Salud</span></li>
 
                 <li class="menu-item">
-                  <a href="../Carrito/MiCarrito.php" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-box"></i>
-                    <div data-i18n="Analytics">Mi Carrito</div>
+                  <a href="../Citas/MisCitas.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                    <div data-i18n="Citas">Mis Citas</div>
+                  </a>
+                </li>
+                
+                <li class="menu-item">
+                  <a href="../Facturacion/MisFacturas.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-receipt"></i>
+                    <div data-i18n="Facturas">Facturación</div>
                   </a>
                 </li>';
             }
