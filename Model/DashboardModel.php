@@ -1,46 +1,50 @@
 <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php'; // Tu archivo de conexión OCI8
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php';
 
     function ObtenerEstadisticasHospital()
     {
         try
         {
             $context = OpenConnection();
-            $datos = [];
+            if (!$context) {
+                return ["SUCURSALES"=>0, "PERSONAL"=>0, "USUARIOS"=>0, "FACTURAS"=>0];
+            }
 
-            // 1. Contar Sucursales
-            $s1 = oci_parse($context, "SELECT COUNT(*) AS CANTIDAD FROM FIDE_SUCURSAL_TB WHERE ID_ESTADO = 1");
-            oci_execute($s1);
-            $r1 = oci_fetch_array($s1, OCI_ASSOC);
-            $datos["SUCURSALES"] = $r1["CANTIDAD"];
-            oci_free_statement($s1);
+            //llamada al SP con 4 variables de salida
+            $sql = "BEGIN FIDE_SALUDTOTAL_PKG.FIDE_DASHBOARD_SP(:p1, :p2, :p3, :p4); END;";
+            $stmt = oci_parse($context, $sql);
 
-            // 2. Contar Personal
-            $s2 = oci_parse($context, "SELECT COUNT(*) AS CANTIDAD FROM FIDE_PERSONAL_TB WHERE ID_ESTADO = 1");
-            oci_execute($s2);
-            $r2 = oci_fetch_array($s2, OCI_ASSOC);
-            $datos["PERSONAL"] = $r2["CANTIDAD"];
-            oci_free_statement($s2);
+            //inicializamos las variables del php que reciben los datos
+            $cantSucursales = 0;
+            $cantPersonal = 0;
+            $cantUsuarios = 0;
+            $cantFacturas = 0;
 
-            // 3. Contar Usuarios
-            $s3 = oci_parse($context, "SELECT COUNT(*) AS CANTIDAD FROM FIDE_USUARIO_TB WHERE ID_ESTADO = 1");
-            oci_execute($s3);
-            $r3 = oci_fetch_array($s3, OCI_ASSOC);
-            $datos["USUARIOS"] = $r3["CANTIDAD"];
-            oci_free_statement($s3);
+            //bindeamos las variables de PHP a los parámetros de Oracle
+            //el tercer parámetro (32) es la longitud máxima, el cuarto es el tipo (Entero)
+            oci_bind_by_name($stmt, ":p1", $cantSucursales, 6, SQLT_INT);
+            oci_bind_by_name($stmt, ":p2", $cantPersonal, 6, SQLT_INT);
+            oci_bind_by_name($stmt, ":p3", $cantUsuarios, 6, SQLT_INT);
+            oci_bind_by_name($stmt, ":p4", $cantFacturas, 6, SQLT_INT);
 
-            // 4. Contar Facturas (Total)
-            $s4 = oci_parse($context, "SELECT COUNT(*) AS CANTIDAD FROM FIDE_FACTURA_TB");
-            oci_execute($s4);
-            $r4 = oci_fetch_array($s4, OCI_ASSOC);
-            $datos["FACTURAS"] = $r4["CANTIDAD"];
-            oci_free_statement($s4);
-
+            //ejecutamos
+            oci_execute($stmt);
+            
+            //liberamos recursos
+            oci_free_statement($stmt);
             CloseConnection($context);
-            return $datos;
+
+            //devolvemos el array con las claves que espera la vista
+            return [
+                "SUCURSALES" => $cantSucursales,
+                "PERSONAL"   => $cantPersonal,
+                "USUARIOS"   => $cantUsuarios,
+                "FACTURAS"   => $cantFacturas
+            ];
         }
         catch(Exception $error)
         {
+            //en caso de error, devolvemos 0 para no romper la interfaz
             return ["SUCURSALES"=>0, "PERSONAL"=>0, "USUARIOS"=>0, "FACTURAS"=>0];
         }
     }

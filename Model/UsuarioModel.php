@@ -1,6 +1,8 @@
-// UsuarioModel.php (Adaptado para Oracle OCI8)
+
 <?php
     include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php';
+
+    define('PKG_NAME', 'FIDE_SALUDTOTAL_PKG.');
 
     /**
      * 
@@ -76,7 +78,6 @@
             // Bindear los parámetros
             foreach ($binds as $key => $value) {
                 // Necesitamos pasar la variable por referencia para oci_bind_by_name
-                // En PHP, si se bindea un valor de un array, ya es una referencia.
                 oci_bind_by_name($stmt, $key, $binds[$key]); 
             }
 
@@ -95,55 +96,68 @@
         }
     }
 
-    // --- Funciones del CRUD de USUARIOS ---
-
-    function ConsultarUsuariosModel()
+   function ConsultarUsuariosModel()
     {
-        // El SP debe ser algo como: CREATE OR REPLACE PROCEDURE SP_CONSULTAR_USUARIOS(cursor_out OUT SYS_REFCURSOR)
-        return EjecutarConsultaUsuario('SP_CONSULTAR_USUARIOS');
+        return EjecutarRefCursorSP(PKG_NAME . "FIDE_USUARIO_TB_LISTAR_SP");
     }
 
-    function ConsultarUsuarioModel($id)
+    function ConsultarUsuarioModel($idUsuario)
     {
-        // Este SP devuelve solo un registro, pero usa la misma lógica de cursor.
-        // El SP debe ser algo como: CREATE OR REPLACE PROCEDURE SP_CONSULTAR_USUARIO(id_in IN NUMBER, cursor_out OUT SYS_REFCURSOR)
-        $datos = EjecutarConsultaUsuario('SP_CONSULTAR_USUARIO', [':ID_IN' => $id]);
-        return count($datos) > 0 ? $datos[0] : null; // Retorna solo el primer registro
+        $lista = ConsultarUsuariosModel();
+        foreach($lista as $usuario) {
+            if($usuario['id_usuario'] == $idUsuario) {
+                return $usuario;
+            }
+        }
+        return null;
     }
 
-    function AgregarUsuarioModel($nombre,$apellido,$cedula,$email,$rol,$password)
+    function AgregarUsuarioModel($nombreUsuario, $contrasenna, $idPersonal, $idPaciente, $idRol)
     {
-        // Reemplaza con los nombres de tus parámetros de SP
-        $binds = [
-            ':NOMBRE_IN' => $nombre,
-            ':APELLIDO_IN' => $apellido,
-            ':CEDULA_IN' => $cedula,
-            ':EMAIL_IN' => $email,
-            ':ROL_IN' => $rol,
-            ':PASSWORD_IN' => $password
+       
+        $params = [
+            'P_NOMBRE_USUARIO'  => $nombreUsuario,
+            'P_CONTRASENNA'     => $contrasenna, 
+            'P_ID_PERSONAL'     => empty($idPersonal) ? null : $idPersonal,
+            'P_ID_PACIENTE'     => empty($idPaciente) ? null : $idPaciente,
+            'P_ID_ROL_SISTEMA'  => $idRol,
+            'P_ID_ESTADO'       => 1 
         ];
-        return EjecutarAccionUsuario('SP_AGREGAR_USUARIO', $binds);
+
+        return EjecutarAccionSP(PKG_NAME . "FIDE_USUARIO_TB_INSERTAR_SP", $params);
     }
-    
-    function ActualizarUsuarioModel($idUsuario,$nombre,$apellido,$cedula,$email,$rol)
+
+    function ActualizarUsuarioModel($idUsuario, $idRol, $idEstado)
     {
-        // Reemplaza con los nombres de tus parámetros de SP
-        $binds = [
-            ':ID_USUARIO_IN' => $idUsuario,
-            ':NOMBRE_IN' => $nombre,
-            ':APELLIDO_IN' => $apellido,
-            ':CEDULA_IN' => $cedula,
-            ':EMAIL_IN' => $email,
-            ':ROL_IN' => $rol
+        $params = [
+            'P_ID_USUARIO'      => $idUsuario,
+            'P_ID_ROL_SISTEMA'  => $idRol,
+            'P_ID_ESTADO'       => $idEstado
         ];
-        return EjecutarAccionUsuario('SP_ACTUALIZAR_USUARIO', $binds);
+
+        return EjecutarAccionSP(PKG_NAME . "FIDE_USUARIO_TB_ACTUALIZAR_SP", $params);
     }
 
-    function CambiarEstadoUsuarioModel($idUsuario)
+    function CambiarEstadoUsuarioModel($idUsuario, $nuevoEstado)
     {
-        $binds = [':ID_USUARIO_IN' => $idUsuario];
-        return EjecutarAccionUsuario('SP_CAMBIAR_ESTADO_USUARIO', $binds);
+        // Obtenemos el usuario para no perder su rol actual al actualizar
+        $usuario = ConsultarUsuarioModel($idUsuario);
+        if(!$usuario) return false;
+
+        $idRolActual = $usuario['id_rol_sistema']; //clave en minúscula
+
+        return ActualizarUsuarioModel($idUsuario, $idRolActual, $nuevoEstado);
     }
 
-    // (Otras funciones de ProductoModel como ConsultarProductosPrincipalModel no son necesarias y se eliminan)
+    function ConsultarRolesSistemaModel()
+    {
+        return EjecutarRefCursorSP(PKG_NAME . "FIDE_ROL_SISTEMA_TB_LISTAR_SP");
+    }
+
+    function ConsultarEstadosModel()
+    {
+        return EjecutarRefCursorSP(PKG_NAME . "FIDE_ESTADO_TB_LISTAR_SP");
+    }
+
+
 ?>

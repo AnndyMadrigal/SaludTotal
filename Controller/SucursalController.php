@@ -23,7 +23,7 @@
 
         if($resultado)
         {
-            header("Location: ../../View/Sucursales/Sucursales.php");
+            header("Location: ../View/Sucursales/Sucursales.php");
             exit;
         }
         else

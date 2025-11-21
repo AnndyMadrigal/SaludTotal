@@ -1,28 +1,29 @@
 $(function () {
 
-    $("#formRegistro").validate({
+    $("#formAgregarSucursal").validate({
         rules: {
-            NombreUsuario: {
+            Nombre: {
                 required: true
             },
-            CorreoElectronico: {
+            Telefono: {
                 required: true
             },
-            Contrasenna: {
-                required: true
-            },
+            IDDireccion: {
+               required: true,
+               number: true,
+               min: 0.01
+            }
         },
         messages: {
-            NombreUsuario: {
+            Nombre: {
                 required: "* Requerido"
             },
-            CorreoElectronico: {
+            Telefono: {
                 required: "* Requerido"
             },
-            Contrasenna: {
+            IDDireccion: {
                 required: "* Requerido"
             }
         }
     });
-
 });

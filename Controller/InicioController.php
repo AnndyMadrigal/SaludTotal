@@ -24,27 +24,27 @@
         $_POST["Mensaje"] = "No se ha podido crear la cuenta solicitada";
     }
 
-    // Lógica de Iniciar Sesión
+    //lógica de Iniciar Sesión
     if(isset($_POST["btnIniciarSesion"]))
     {
         $usuario = $_POST["NombreUsuario"]; 
         $contrasenna = $_POST["Contrasenna"];
 
-        // Llamamos al modelo
+        //llamamos al modelo
         $datosUsuario = ValidarCuentaModel($usuario, $contrasenna);
 
         if($datosUsuario != null)
         {
-            // Guardamos datos en Sesión según tus columnas de Oracle
+            //guardamos datos en Sesión
             $_SESSION["IdUsuario"] = $datosUsuario["ID_USUARIO"];
             $_SESSION["NombreUsuario"] = $datosUsuario["NOMBRE_USUARIO"];
             $_SESSION["IdRol"] = $datosUsuario["ID_ROL_SISTEMA"];
             
-            // Opcional: Guardar ID personal o paciente si existen
+            //Guardar ID personal o paciente si existen
             $_SESSION["IdPersonal"] = $datosUsuario["ID_PERSONAL"]; 
             $_SESSION["IdPaciente"] = $datosUsuario["ID_PACIENTE"];
 
-            // Redirección
+            //Redirección
             header("Location: ../../View/Inicio/Principal.php");
             exit;
         }

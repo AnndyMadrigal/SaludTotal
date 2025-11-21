@@ -6,47 +6,86 @@
         session_start();
     }
 
-    function ConsultarUsuario()
+    function ConsultarUsuarios()
     {
-        $consecutivo = $_SESSION["ConsecutivoUsuario"];
-        return ConsultarUsuarioModel($consecutivo);
+        return ConsultarUsuariosModel();
     }
 
-    if(isset($_POST["btnActualizarPerfil"]))
+    function ConsultarUsuario($id)
     {
-        $consecutivo = $_SESSION["ConsecutivoUsuario"];
-        $identificacion = $_POST["Identificacion"];
-        $nombre = $_POST["Nombre"];
-        $correoElectronico = $_POST["CorreoElectronico"];
-
-        $resultado = ActualizarPerfilModel($consecutivo, $identificacion,$nombre,$correoElectronico);
-
-        if($resultado)
-        {
-            $_SESSION["Nombre"] = $nombre;
-            $_POST["Mensaje"] = "La información se actualizó correctamente";
-        }
-        else
-        {
-            $_POST["Mensaje"] = "La información no se actualizó correctamente";
-        }        
+        return ConsultarUsuarioModel($id);
     }
 
-    if(isset($_POST["btnActualizarSeguridad"]))
+    //AGREGAR USUARIO
+    if(isset($_POST["btnAgregarUsuario"]))
     {
-        $consecutivo = $_SESSION["ConsecutivoUsuario"];
+        $nombreUsuario = $_POST["NombreUsuario"];
         $contrasenna = $_POST["Contrasenna"];
+        $idRol = $_POST["IDRol"];
+        
+        // Un usuario es Personal O Paciente, no ambos (generalmente)
+        $idPersonal = $_POST["IDPersonal"];
+        $idPaciente = $_POST["IDPaciente"];
 
-        $resultado = ActualizarSeguridadModel($consecutivo, $contrasenna);
+        $resultado = AgregarUsuarioModel($nombreUsuario, $contrasenna, $idPersonal, $idPaciente, $idRol);
 
         if($resultado)
         {
-            $_POST["Mensaje"] = "La información se actualizó correctamente";
+            header("Location: ../View/Usuarios/Usuarios.php");
+            exit;
         }
         else
         {
-            $_POST["Mensaje"] = "La información no se actualizó correctamente";
+            header("Location: ../View/Usuarios/Usuarios.php?error=1");
+            exit;
         }        
+    }
+
+    //ACTUALIZAR USUARIO
+    if(isset($_POST["btnActualizarUsuario"]))
+    {
+        $idUsuario = $_POST["IDUsuario"];
+        $idRol = $_POST["IDRol"];
+        $idEstado = $_POST["IDEstado"];
+
+        $resultado = ActualizarUsuarioModel($idUsuario, $idRol, $idEstado);
+
+        if($resultado)
+        {
+            header("Location: ../View/Usuarios/Usuarios.php");
+            exit;
+        }
+        else
+        {
+            header("Location: ../View/Usuarios/Usuarios.php?error=1");
+            exit;
+        }        
+    }
+
+    // CAMBIAR ESTADO
+    if(isset($_POST["btnCambiarEstado"]))
+    {
+        $idUsuario = $_POST["IDUsuario"];
+        $estadoActual = $_POST["EstadoActual"];
+        $nuevoEstado = ($estadoActual == 1) ? 2 : 1; 
+
+        $resultado = CambiarEstadoUsuarioModel($idUsuario, $nuevoEstado);
+
+        if($resultado)
+        {
+            header("Location: ../View/Usuarios/Usuarios.php");
+            exit;
+        }
     }   
+
+    function ConsultarRolesSistema()
+    {
+        return ConsultarRolesSistemaModel();
+    }
+
+    function ConsultarEstados()
+    {
+        return ConsultarEstadosModel();
+    }
 
 ?>

@@ -26,19 +26,16 @@
                                         
                                             <div class="mb-3">
                                                 <label class="form-label" for="Nombre">Nombre</label>
-                                                <input type="text" class="form-control" id="Nombre" name="Nombre"
-                                                    placeholder="Ingrese el nombre de la sucursal" required />
+                                                <input type="text" class="form-control" id="Nombre" name="Nombre" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="Telefono">Teléfono</label>
                                                 <input type="text" class="form-control" id="Telefono" name="Telefono"
-                                                    placeholder="Ingrese el teléfono" required />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="IDDireccion">ID Dirección</label>
                                                 <input type="number" class="form-control" id="IDDireccion"
-                                                    name="IDDireccion" placeholder="Ingrese el ID de Dirección"
-                                                    required />
+                                                    name="IDDireccion"/>
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button class="btn btn-primary d-grid w-25" id="btnAgregarSucursal"
@@ -60,5 +57,7 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <?php ShowJS(); ?>
+    <script src="../js/AgregarSucursal.js"></script>
+
 </body>
 </html>

@@ -6,7 +6,7 @@
   $resultado = ConsultarSucursal($idSucursal);
   
   if ($resultado == null) {
-      // Manejar error de ID no encontrado
+      //manejar error de ID no encontrado
       header("Location: Sucursales.php");
       exit;
   }
@@ -73,5 +73,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <?php ShowJS(); ?>
+    <script src="../js/ActualizarSucursal.js"></script>
 </body>
 </html>

@@ -43,7 +43,6 @@
                                             <tbody>
 
                                                 <?php 
-                                                    // Las claves del array están en MINÚSCULAS
                                                     foreach ($resultado as $fila): ?>
                                                 <tr>
                                                     <td><?= $fila['id_sucursal'] ?></td>
@@ -94,5 +93,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <?php ShowJS(); ?>
+    <script src="../js/VerSucursales.js"></script>
 </body>
 </html>
