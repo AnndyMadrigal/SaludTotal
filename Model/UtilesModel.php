@@ -2,13 +2,9 @@
 // Define las credenciales y la cadena de conexión de Oracle
 define('ORACLE_USER', 'FIDE_SALUDTOTAL_BD'); // Reemplaza con tu usuario
 define('ORACLE_PASS', '123'); // Reemplaza con tu contraseña
-define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE', '192.168.1.10:1521/ORCL', o un nombre TNS
+define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE'
 
-/**
- * Establece una conexión a la base de datos Oracle.
- *
- * @return resource|false El identificador de conexión si tiene éxito, o false si falla.
- */
+
 function OpenConnection() {
     $conn = @oci_connect(ORACLE_USER, ORACLE_PASS, ORACLE_CONN_STRING);
     if (!$conn) {
@@ -16,27 +12,20 @@ function OpenConnection() {
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
         return false;
     }
+
+    oci_execute(oci_parse($conn, "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"));
+
     return $conn;
 }
 
-/**
- * Cierra la conexión a la base de datos Oracle.
- *
- * @param resource $conn El identificador de conexión devuelto por OpenConnection().
- * @return bool True si la desconexión fue exitosa.
- */
+
 function CloseConnection($conn) {
     return oci_close($conn);
 }
 
-define('P_CURSOR_NAME', 'P_CURSOR'); // Nombre del parámetro REF CURSOR estándar
+define('P_CURSOR_NAME', 'P_CURSOR'); //nombre del parámetro REF CURSOR estándar
 
-/**
- * Ejecuta un SP de Oracle que devuelve un SYS_REFCURSOR.
- * @param string $sp_name Nombre completo del SP (ej. FIDE_SALUDTOTAL_PKG.FIDE_SUCURSAL_TB_LISTAR_SP).
- * @param array $params_in Array asociativo de parámetros de entrada (claves: nombre del parámetro del SP).
- * @return array|null Array de filas (claves en minúsculas) o null si hay error.
- */
+
 function EjecutarRefCursorSP($sp_name, $params_in = [])
 {
     try
@@ -52,22 +41,21 @@ function EjecutarRefCursorSP($sp_name, $params_in = [])
 
         $stmt = oci_parse($conn, $sql);
 
-        // Bindear parámetros de entrada
+        //bindear parámetros de entrada
         foreach ($params_in as $name => $value) {
-            // Se bindea por referencia, por eso $params_in[$name]
             oci_bind_by_name($stmt, ":$name", $params_in[$name], -1); 
         }
         
-        // Definir y bindear el parámetro de salida (REF CURSOR)
+        //definir y bindear el parámetro de salida (REFCURSOR)
         $cursor = oci_new_cursor($conn);
         oci_bind_by_name($stmt, ":" . P_CURSOR_NAME, $cursor, -1, OCI_B_CURSOR);
 
-        oci_execute($stmt); // Ejecutar el SP
-        oci_execute($cursor); // Ejecutar el REF CURSOR para obtener los datos
+        oci_execute($stmt); //ejecutar el SP
+        oci_execute($cursor); //ejecutar el REF CURSOR para obtener los datos
 
         $datos = [];
         while ($row = oci_fetch_array($cursor, OCI_ASSOC + OCI_RETURN_NULLS)) {
-            // Convertir claves a minúsculas, ya que OCI devuelve mayúsculas por defecto
+            //convertir claves a minúsculas, ya que OCI devuelve mayúsculas por defecto
             $datos[] = array_change_key_case($row, CASE_LOWER);
         }
 
@@ -84,19 +72,14 @@ function EjecutarRefCursorSP($sp_name, $params_in = [])
     }
 }
 
-/**
- * Ejecuta un Stored Procedure de Oracle de acción (INSERT/UPDATE/DELETE).
- * @param string $sp_name Nombre completo del SP.
- * @param array $params Array asociativo de parámetros de entrada.
- * @return bool True si la ejecución fue exitosa y se hizo COMMIT.
- */
+
 function EjecutarAccionSP($sp_name, $params)
 {
     try
     {
         $conn = OpenConnection();
         
-        // Construir la cadena del SP: BEGIN PAQUETE.SP(:param1, :param2); END;
+        //Construir la cadena del SP: BEGIN PAQUETE.SP(:param1, :param2); END;
         $param_names = [];
         foreach ($params as $name => $value) {
             $param_names[] = "$name => :$name";
@@ -106,11 +89,8 @@ function EjecutarAccionSP($sp_name, $params)
 
         $stmt = oci_parse($conn, $sql);
 
-        // Bindear parámetros
+        //Bindear parámetros
         foreach ($params as $name => $value) {
-            // IMPORTANTE: Asignar el valor a una variable temporal para pasar por referencia
-            // OCI8 requiere pasar variables, no valores directos en el bucle a veces.
-            // Sin embargo, bind_by_name funciona, pero hay que tener cuidado con el scope.
             oci_bind_by_name($stmt, ":$name", $params[$name], -1);
         }
 
@@ -128,16 +108,16 @@ function EjecutarAccionSP($sp_name, $params)
     }
     catch(Exception $error)
     {
-        SaveError($error); // Ahora sí funcionará porque la definimos abajo
+        SaveError($error);
         return false;
     }
 }
 
 function SaveError($e) {
-    // Guardar el error en el log de errores de PHP (apache error.log o php_error.log)
+    function SaveError($e) {
+    //Guardar en log (lo que ya tenías)
     error_log("ERROR BD: " . $e->getMessage());
-    // Opcional: Imprimir en pantalla si estás en desarrollo (CUIDADO EN PRODUCCION)
-    echo "";
+}
 }
 
 ?>

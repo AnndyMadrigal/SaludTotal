@@ -89,9 +89,16 @@
                 </li>
 
                 <li class="menu-item">
-                  <a href="../Usuarios/Usuarios.php" class="menu-link">
+                  <a href="../Pacientes/Pacientes.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i> 
-                    <div data-i18n="Usuarios">Usuarios</div>
+                    <div data-i18n="Pacientes">Pacientes</div>
+                  </a>
+                </li>
+                
+                <li class="menu-item">
+                  <a href="../Personal/Personal.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user"></i> 
+                    <div data-i18n="Pacientes">Personal</div>
                   </a>
                 </li>';
             }

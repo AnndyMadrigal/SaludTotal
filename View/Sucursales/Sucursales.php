@@ -8,10 +8,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php ShowCSS(); ?>
+
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <?php ShowMenu(); ?> 
+            <?php ShowMenu(); ?>
 
             <div class="layout-page">
                 <?php ShowNav(); ?>
@@ -35,38 +36,45 @@
                                                     <th>ID</th>
                                                     <th>Nombre</th>
                                                     <th>Teléfono</th>
-                                                    <th>ID Dirección</th>
-                                                    <th>ID Estado</th>
+                                                    <th>Dirección</th>
+                                                    <th>Estado</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
                                                 <?php 
-                                                    foreach ($resultado as $fila): ?>
+                                                    foreach ($resultado as $fila): 
+                                                ?>
                                                 <tr>
                                                     <td><?= $fila['id_sucursal'] ?></td>
                                                     <td><?= htmlspecialchars($fila['nombre']) ?></td>
-                                                    <td><?= htmlspecialchars($fila['telefono']) ?></td>
-                                                    <td><?= $fila['id_direccion'] ?></td>
-                                                    <td><?= $fila['id_estado'] ?></td> 
+
+                                                    <td><?= htmlspecialchars($fila['direccion_completa']) ?></td>
+
+                                                    <td><?= $fila['telefono'] ?></td>
+
+                                                    <td>
+                                                        <?php if($fila['id_estado'] == 1): ?>
+                                                        <span class="badge bg-label-success">Activo</span>
+                                                        <?php else: ?>
+                                                        <span class="badge bg-label-danger">Inactivo</span>
+                                                        <?php endif; ?>
+                                                    </td>
+
                                                     <td>
                                                         <div style="display:flex; align-items:center; gap:10px;">
                                                             <a
                                                                 href="ActualizarSucursal.php?id=<?= $fila['id_sucursal'] ?>">
                                                                 <i class="fa fa-edit" style="font-size:22px;"></i>
                                                             </a>
-
-                                                            <form method="POST"
-                                                                action="../../Controller/SucursalController.php"
+                                                            <form method="POST" action=""
                                                                 style="margin:0; display:inline;">
-                                                                <input type="hidden" name="IDSucursal"
+                                                                <input type="hidden" name="ConsecutivoSucursal"
                                                                     value="<?= $fila['id_sucursal'] ?>">
                                                                 <input type="hidden" name="EstadoActual"
                                                                     value="<?= $fila['id_estado'] ?>">
-                                                                <button type="submit" name="btnCambiarEstado" id="btnCambiarEstado"
-                                                                    style="background:none; border:none; color:#0d6efd; cursor:pointer; padding:0;"
-                                                                    title="Cambiar Estado (Activar/Desactivar)">
+                                                                <button type="submit" name="btnCambiarEstado"
+                                                                    style="background:none; border:none; color:#0d6efd; cursor:pointer; padding:0;">
                                                                     <i class="fa fa-refresh"
                                                                         style="font-size:22px;"></i>
                                                                 </button>
@@ -95,4 +103,5 @@
     <?php ShowJS(); ?>
     <script src="../js/VerSucursales.js"></script>
 </body>
+
 </html>
