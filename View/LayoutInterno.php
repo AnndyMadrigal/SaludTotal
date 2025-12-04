@@ -21,7 +21,7 @@
           <title>Salud Total</title>
           <meta name="description" content="" />
 
-          <link rel="stylesheet" href="../css/boxicons.css" />
+          <link rel="stylesheet" href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" />
           <link rel="stylesheet" href="../css/core.css" class="template-customizer-core-css" />
           <link rel="stylesheet" href="../css/theme-default.css" class="template-customizer-theme-css" />
           <link rel="stylesheet" href="../css/demo.css" />
@@ -83,7 +83,7 @@
 
                 <li class="menu-item">
                   <a href="../Sucursales/Sucursales.php" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-building-house"></i> 
+                    <i class="menu-icon tf-icons bx bx-hospital"></i> 
                     <div data-i18n="Sucursales">Sucursales</div>
                   </a>
                 </li>
@@ -97,8 +97,22 @@
                 
                 <li class="menu-item">
                   <a href="../Personal/Personal.php" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-user"></i> 
+                    <i class="menu-icon tf-icons bx bx-community"></i> 
                     <div data-i18n="Pacientes">Personal</div>
+                  </a>
+                </li>
+
+                <li class="menu-item">
+                  <a href="../Medicamentos/Medicamento.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-pill"></i> 
+                    <div data-i18n="Pacientes">Medicamentos</div>
+                  </a>
+                </li>
+
+                <li class="menu-item">
+                  <a href="../Inventario/Inventario.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-warehouse"></i> 
+                    <div data-i18n="Pacientes">Inventario</div>
                   </a>
                 </li>';
             }
@@ -150,13 +164,6 @@
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
-                  <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Buscar..."
-                    aria-label="Search..."
-                  />
                 </div>
               </div>
 

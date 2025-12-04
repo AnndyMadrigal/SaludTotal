@@ -6,7 +6,7 @@ define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE'
 
 
 function OpenConnection() {
-    $conn = @oci_connect(ORACLE_USER, ORACLE_PASS, ORACLE_CONN_STRING);
+    $conn = @oci_connect(ORACLE_USER, ORACLE_PASS, ORACLE_CONN_STRING, 'AL32UTF8');
     if (!$conn) {
         $e = oci_error();
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
