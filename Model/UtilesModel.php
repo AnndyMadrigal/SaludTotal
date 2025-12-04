@@ -4,6 +4,9 @@ define('ORACLE_USER', 'FIDE_SALUDTOTAL_BD'); // Reemplaza con tu usuario
 define('ORACLE_PASS', '123'); // Reemplaza con tu contraseña
 define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE'
 
+if (!defined('PKG_NAME')) {
+        define('PKG_NAME', 'FIDE_SALUDTOTAL_PKG.');
+    }
 
 function OpenConnection() {
     $conn = @oci_connect(ORACLE_USER, ORACLE_PASS, ORACLE_CONN_STRING, 'AL32UTF8');

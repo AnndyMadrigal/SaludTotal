@@ -1,6 +1,5 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php';
-define('PKG_NAME', 'FIDE_SALUDTOTAL_PKG.');
 
 function ConsultarInventarioModel()
 {
@@ -45,7 +44,7 @@ function CambiarEstadoInventarioModel($id, $nuevoEstado)
 // Listas para Dropdowns
 function ListarSucursalesInv()
 {
-    return EjecutarRefCursorSP(PKG_NAME . "FIDE_SUCURSAL_TB_LISTAR_SP");
+    return EjecutarRefCursorSP(PKG_NAME . "FIDE_SUCURSAL_TB_LISTAR_DROPDOWN_SP");
 }
 
 function ListarMedicamentosInv()

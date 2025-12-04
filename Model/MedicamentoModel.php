@@ -1,6 +1,5 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php';
-define('PKG_NAME', 'FIDE_SALUDTOTAL_PKG.');
 
 function ConsultarMedicamentosModel()
 {

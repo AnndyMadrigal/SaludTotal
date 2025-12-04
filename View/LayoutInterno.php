@@ -114,6 +114,13 @@
                     <i class="menu-icon tf-icons bx bx-warehouse"></i> 
                     <div data-i18n="Pacientes">Inventario</div>
                   </a>
+                </li>
+
+                <li class="menu-item">
+                  <a href="../Facturacion/NuevaFactura.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-receipt"></i>
+                    <div data-i18n="Facturas">Facturación</div>
+                  </a>
                 </li>';
             }
             else
