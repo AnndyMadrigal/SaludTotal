@@ -23,7 +23,7 @@ $datos = ConsultarInventario();
                                 <a class="btn btn-outline-primary position-absolute end-0 me-3" href="AgregarInventario.php">Agregar</a>
                             </div>
                             <div class="card-body">
-                                <table class="table table-hover datatable">
+                                <table id="tIventario"class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Sucursal</th>
@@ -76,11 +76,7 @@ $datos = ConsultarInventario();
         </div>
     </div>
     <?php ShowJS(); ?>
-    <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable();
-        });
-    </script>
+    <script src="../js/datatables/VerInventario.js"></script>
 </body>
 
 </html>

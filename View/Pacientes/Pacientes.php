@@ -72,7 +72,7 @@
         </div>
     </div>
     <?php ShowJS(); ?>
-    <script src="../js/VerPacientes.js"></script>
+    <script src="../js/datatables/VerPacientes.js"></script>
 </body>
 
 </html>

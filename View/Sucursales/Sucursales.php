@@ -101,7 +101,7 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <?php ShowJS(); ?>
-    <script src="../js/VerSucursales.js"></script>
+    <script src="../js/datatables/VerSucursales.js"></script>
 </body>
 
 </html>

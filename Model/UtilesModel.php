@@ -1,8 +1,8 @@
 <?php
-// Define las credenciales y la cadena de conexión de Oracle
-define('ORACLE_USER', 'FIDE_SALUDTOTAL_BD'); // Reemplaza con tu usuario
-define('ORACLE_PASS', '123'); // Reemplaza con tu contraseña
-define('ORACLE_CONN_STRING', 'localhost/XE'); // Por ejemplo: 'localhost/XE'
+//definicion de credenciales y conexion a ORACLE
+define('ORACLE_USER', 'FIDE_SALUDTOTAL_BD'); //usuario
+define('ORACLE_PASS', '123'); //contrasenna
+define('ORACLE_CONN_STRING', 'localhost/XE');
 
 if (!defined('PKG_NAME')) {
         define('PKG_NAME', 'FIDE_SALUDTOTAL_PKG.');
@@ -17,6 +17,10 @@ function OpenConnection() {
     }
 
     oci_execute(oci_parse($conn, "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"));
+
+    //---NUEVO: configuracion regional para decimales
+    // '.,' significa: el primer símbolo (.) es el decimal, el segundo (,) es para miles.
+    oci_execute(oci_parse($conn, "ALTER SESSION SET NLS_NUMERIC_CHARACTERS = '.,'"));
 
     return $conn;
 }
@@ -116,11 +120,9 @@ function EjecutarAccionSP($sp_name, $params)
     }
 }
 
+//CORRECCIÓN AQUÍ: Había una doble declaración de función
 function SaveError($e) {
-    function SaveError($e) {
-    //Guardar en log (lo que ya tenías)
     error_log("ERROR BD: " . $e->getMessage());
-}
 }
 
 ?>

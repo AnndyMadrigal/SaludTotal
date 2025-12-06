@@ -9,6 +9,7 @@
             <title>Salud Total</title>
             <meta name="description" content="" />
             
+            <link rel="icon" type="image/x-icon" href="../img/favicon.ico" />
             <link rel="stylesheet" href="../css/boxicons.css" />
             <link rel="stylesheet" href="../css/core.css" class="template-customizer-core-css" />
             <link rel="stylesheet" href="../css/theme-default.css" class="template-customizer-theme-css" />

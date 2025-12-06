@@ -74,7 +74,7 @@
         </div>
     </div>
     <?php ShowJS(); ?>
-    <script src="../js/VerPersonal.js"></script>
+    <script src="../js/datatables/VerPersonal.js"></script>
 </body>
 
 </html>

@@ -1,26 +1,25 @@
 <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/InicioController.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/InicioController.php';
 
-    if(session_status() == PHP_SESSION_NONE)
-    {
-        session_start();
-    }
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 
-    if(!isset($_SESSION["NombreUsuario"]))
-    {
-      header("Location: ../../View/Inicio/IniciarSesion.php");
-      exit;
-    }
+if (!isset($_SESSION["NombreUsuario"])) {
+  header("Location: ../../View/Inicio/IniciarSesion.php");
+  exit;
+}
 
-    function ShowCSS()
-    {
-      echo '
+function ShowCSS()
+{
+  echo '
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
           <title>Salud Total</title>
           <meta name="description" content="" />
 
+          <link rel="icon" type="image/x-icon" href="../img/favicon.ico" />
           <link rel="stylesheet" href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" />
           <link rel="stylesheet" href="../css/core.css" class="template-customizer-core-css" />
           <link rel="stylesheet" href="../css/theme-default.css" class="template-customizer-theme-css" />
@@ -31,11 +30,11 @@
           <script src="../js/helpers.js"></script>
           <script src="../js/config.js"></script>
         </head>';
-    }
+}
 
-    function ShowJS()
-    {
-      echo '
+function ShowJS()
+{
+  echo '
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="../js/popper.js"></script>
@@ -46,18 +45,17 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>';
-    }
+}
 
-    function ShowMenu()
-    {
-        $perfil = "";
+function ShowMenu()
+{
+  $perfil = "";
 
-        if(isset($_SESSION["IdRol"])) 
-        {
-          $perfil = $_SESSION["IdRol"];
-        }
+  if (isset($_SESSION["IdRol"])) {
+    $perfil = $_SESSION["IdRol"];
+  }
 
-        echo '
+  echo '
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="../Inicio/Principal.php" class="app-brand-link">
@@ -74,9 +72,8 @@
 
           <ul class="menu-inner py-1">';
 
-            if($perfil == "1")
-            {
-              echo '
+  if ($perfil == "1") {
+    echo '
                 <li class="menu-header small text-uppercase">
                   <span class="menu-header-text">Administración Hospitalaria</span>
                 </li>
@@ -98,34 +95,32 @@
                 <li class="menu-item">
                   <a href="../Personal/Personal.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-community"></i> 
-                    <div data-i18n="Pacientes">Personal</div>
+                    <div data-i18n="Personal">Personal</div>
+                  </a>
+                </li>
+
+                <li class="menu-item">
+                  <a href="../Servicios/Servicios.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-receipt"></i>
+                    <div data-i18n="Servicios">Servicios</div>
                   </a>
                 </li>
 
                 <li class="menu-item">
                   <a href="../Medicamentos/Medicamento.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-pill"></i> 
-                    <div data-i18n="Pacientes">Medicamentos</div>
+                    <div data-i18n="Medicamentos">Medicamentos</div>
                   </a>
                 </li>
-
+              
                 <li class="menu-item">
                   <a href="../Inventario/Inventario.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-warehouse"></i> 
-                    <div data-i18n="Pacientes">Inventario</div>
-                  </a>
-                </li>
-
-                <li class="menu-item">
-                  <a href="../Facturacion/NuevaFactura.php" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-receipt"></i>
-                    <div data-i18n="Facturas">Facturación</div>
+                    <div data-i18n="Inventario">Inventario</div>
                   </a>
                 </li>';
-            }
-            else
-            {
-               echo '
+  } else {
+    echo '
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Mi Salud</span></li>
 
                 <li class="menu-item">
@@ -141,24 +136,23 @@
                     <div data-i18n="Facturas">Facturación</div>
                   </a>
                 </li>';
-            }
+  }
 
-          echo '</ul>
+  echo '</ul>
         </aside>';
-    }
+}
 
-    function ShowNav()
-    {
-        $nombre = "";
-        $nombrePerfil = "";
+function ShowNav()
+{
+  $nombre = "";
+  $nombrePerfil = "";
 
-        if(isset($_SESSION["NombreUsuario"]))
-        {
-          $nombre = $_SESSION["NombreUsuario"];
-          $rol = ($_SESSION["IdRol"]==1) ? "Administrador" : "Usuario";
-        }
+  if (isset($_SESSION["NombreUsuario"])) {
+    $nombre = $_SESSION["NombreUsuario"];
+    $rol = ($_SESSION["IdRol"] == 1) ? "Administrador" : "Usuario";
+  }
 
-        echo '
+  echo '
          <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
             id="layout-navbar">
@@ -222,11 +216,11 @@
               </ul>
             </div>
           </nav>';
-    }
+}
 
-    function ShowFooter()
-    {
-        echo '
+function ShowFooter()
+{
+  echo '
         <footer class="content-footer footer bg-footer-theme">
               <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                 <div class="mb-2 mb-md-0">
@@ -238,14 +232,14 @@
                 </div>               
               </div>
             </footer>';
-    }
+}
 
 ?>
 
 <script>
-  window.addEventListener("pageshow", function (event) {
+window.addEventListener("pageshow", function(event) {
     if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-      window.location.reload(true);
+        window.location.reload(true);
     }
-  });
+});
 </script>

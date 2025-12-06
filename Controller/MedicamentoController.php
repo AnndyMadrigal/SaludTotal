@@ -27,5 +27,5 @@ if (isset($_POST["btnCambiarEstado"])) {
     $nuevoEstado = ($estadoActual == 1) ? 2 : 1;
 
     CambiarEstadoMedicamentoModel($id, $nuevoEstado);
-    header("Location: ../View/Medicamentos/Medicamentos.php");
+    header("Location: ../../View/Medicamentos/Medicamento.php");
 }

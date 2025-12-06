@@ -23,7 +23,7 @@ $datos = ConsultarMedicamentos();
                                 <a class="btn btn-outline-primary position-absolute end-0 me-3" href="AgregarMedicamento.php">Agregar</a>
                             </div>
                             <div class="card-body">
-                                <table class="table table-hover datatable">
+                                <table id="tMedicamentos"class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Nombre Comercial</th>
@@ -54,7 +54,7 @@ $datos = ConsultarMedicamentos();
                                                             <i class="fa fa-edit" style="font-size:22px;"></i>
                                                         </a>
 
-                                                        <form method="POST" action="../../Controller/MedicamentoController.php" style="margin:0;">
+                                                        <form method="POST" action="" style="margin:0;">
                                                             <input type="hidden" name="IDMedicamento" value="<?= $fila['id_medicamento'] ?>">
                                                             <input type="hidden" name="EstadoActual" value="<?= $fila['id_estado'] ?>">
                                                             <button type="submit" name="btnCambiarEstado" class="btn btn-link p-0 text-primary" title="Cambiar Estado">
@@ -76,11 +76,7 @@ $datos = ConsultarMedicamentos();
         </div>
     </div>
     <?php ShowJS(); ?>
-    <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable();
-        });
-    </script>
+    <script src="../js/datatables/VerMedicamentos.js"></script>
 </body>
 
 </html>
