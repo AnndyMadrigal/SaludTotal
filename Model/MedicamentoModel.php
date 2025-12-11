@@ -12,24 +12,27 @@ function ConsultarMedicamentoPorIDModel($id)
     return empty($data) ? null : $data[0];
 }
 
-function AgregarMedicamentoModel($nombre, $principio, $presentacion)
+function AgregarMedicamentoModel($nombre, $principio, $presentacion, $precio)
 {
     $params = [
         'P_NOMBRE_COMERCIAL' => $nombre,
         'P_PRINCIPIO_ACTIVO' => $principio,
         'P_PRESENTACION'     => $presentacion,
-        'P_ID_ESTADO'        => 1 // Activo por defecto
+        'P_PRECIO_VENTA'     => $precio,
+        'P_ID_ESTADO'        => 1 //Activo por defecto
     ];
     return EjecutarAccionSP(PKG_NAME . "FIDE_MEDICAMENTO_TB_INSERTAR_SP", $params);
 }
 
-function ActualizarMedicamentoModel($id, $nombre, $principio, $presentacion)
+function ActualizarMedicamentoModel($id, $nombre, $principio, $presentacion, $precio)
 {
     $params = [
         'P_ID_MEDICAMENTO'   => $id,
         'P_NOMBRE_COMERCIAL' => $nombre,
         'P_PRINCIPIO_ACTIVO' => $principio,
-        'P_PRESENTACION'     => $presentacion
+        'P_PRESENTACION'     => $presentacion,
+        'P_PRECIO_VENTA'     => $precio
+        
     ];
     return EjecutarAccionSP(PKG_NAME . "FIDE_MEDICAMENTO_TB_ACTUALIZAR_SP", $params);
 }

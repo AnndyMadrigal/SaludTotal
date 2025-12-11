@@ -20,15 +20,19 @@ $datos = ConsultarMedicamentos();
                         <div class="card mb-4 mt-4">
                             <div class="d-flex justify-content-between align-items-center mb-3 position-relative">
                                 <h4 class="card-header mb-0 text-center flex-grow-1">Catálogo de Medicamentos</h4>
-                                <a class="btn btn-outline-primary position-absolute end-0 me-3" href="AgregarMedicamento.php">Agregar</a>
+                                <a class="btn btn-outline-primary position-absolute end-0 me-3"
+                                    href="AgregarMedicamento.php">Agregar</a>
                             </div>
                             <div class="card-body">
-                                <table id="tMedicamentos"class="table table-hover datatable">
+                                <table id="tMedicamentos" class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Nombre Comercial</th>
                                             <th>Principio Activo</th>
                                             <th>Presentación</th>
+                                            <th>Sucursal</th>
+                                            <th>Precio</th>
+                                            <th>Stock</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -41,6 +45,14 @@ $datos = ConsultarMedicamentos();
                                                 <td><?= htmlspecialchars($fila['presentacion']) ?></td>
 
                                                 <td>
+                                                    <span class="badge bg-label-info">
+                                                        <?= htmlspecialchars($fila['nombre_sucursal']) ?>
+                                                    </span>
+                                                </td>
+                                                <td>₡ <?= number_format((float)$fila['precio_venta'], 2) ?></td>
+                                                <td><?= $fila['stock'] ?></td>
+
+                                                <td>
                                                     <?php if ($fila['id_estado'] == 1): ?>
                                                         <span class="badge bg-label-success">Activo</span>
                                                     <?php else: ?>
@@ -50,16 +62,21 @@ $datos = ConsultarMedicamentos();
 
                                                 <td>
                                                     <div class="d-flex gap-2">
-                                                        <a href="ActualizarMedicamento.php?id=<?= $fila['id_medicamento'] ?>" title="Editar">
-                                                            <i class="fa fa-edit" style="font-size:22px;"></i>
-                                                        </a>
+                                                        <?php if ($fila['id_estado'] == 1): ?>
+                                                            <form method="POST" action="../../Controller/CarritoController.php" style="margin:0;">
+                                                                <input type="hidden" name="id_medicamento" value="<?= $fila['id_medicamento'] ?>">
+                                                                <button type="submit" name="btnAgregarMedicamento" class="btn btn-sm btn-success" title="Agregar al Carrito">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
+
+                                                        <a href="ActualizarMedicamento.php?id=<?= $fila['id_medicamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i></a>
 
                                                         <form method="POST" action="" style="margin:0;">
                                                             <input type="hidden" name="IDMedicamento" value="<?= $fila['id_medicamento'] ?>">
                                                             <input type="hidden" name="EstadoActual" value="<?= $fila['id_estado'] ?>">
-                                                            <button type="submit" name="btnCambiarEstado" class="btn btn-link p-0 text-primary" title="Cambiar Estado">
-                                                                <i class="fa fa-refresh" style="font-size:22px;"></i>
-                                                            </button>
+                                                            <button type="submit" name="btnCambiarEstado" class="btn btn-sm btn-link p-0 text-primary"><i class="fa fa-refresh"></i></button>
                                                         </form>
                                                     </div>
                                                 </td>

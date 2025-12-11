@@ -45,6 +45,14 @@ if (!$datos) {
                                         <input type="text" class="form-control" name="Presentacion" value="<?= htmlspecialchars($datos['presentacion']) ?>" required />
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label class="form-label">Precio Unitario</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₡</span>
+                                            <input type="number" step="0.01" class="form-control" name="Precio" value="<?= number_format((float)$datos['precio_venta'], 2, '.', '') ?>" required />
+                                        </div>
+                                    </div>
+
                                     <div class="d-flex justify-content-end">
                                         <a href="Medicamentos.php" class="btn btn-outline-secondary me-2">Cancelar</a>
                                         <button class="btn btn-primary" name="btnActualizarMedicamento" type="submit">Actualizar</button>

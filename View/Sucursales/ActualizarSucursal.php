@@ -1,9 +1,9 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/SucursalController.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/SucursalController.php';
 
-  $s = ConsultarSucursalFull($_GET["id"]); //Usamos la función FULL
-  if(!$s) header("Location: Sucursales.php");
+$s = ConsultarSucursalFull($_GET["id"]); //Usamos la función FULL
+if (!$s) header("Location: Sucursales.php");
 ?>
 <!DOCTYPE html>
 <html lang="en"> <?php ShowCSS(); ?>

@@ -1,7 +1,7 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PacienteController.php';
-  $datos = ConsultarPacientes();
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PacienteController.php';
+$datos = ConsultarPacientes();
 ?>
 <!DOCTYPE html>
 <html lang="en"> <?php ShowCSS(); ?>
@@ -29,37 +29,37 @@
                                     </thead>
                                     <tbody>
                                         <?php foreach ($datos as $fila): ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($fila['nombre'] . ' ' . $fila['apellido_paterno'] . ' ' . $fila['apellido_materno']) ?>
-                                            </td>
-                                            <td><?= date('d/m/Y', strtotime($fila['fecha_nacimiento'])) ?></td>
+                                            <tr>
+                                                <td><?= htmlspecialchars($fila['nombre'] . ' ' . $fila['apellido_paterno'] . ' ' . $fila['apellido_materno']) ?>
+                                                </td>
+                                                <td><?= date('d/m/Y', strtotime($fila['fecha_nacimiento'])) ?></td>
 
-                                            <td><?= htmlspecialchars($fila['direccion_completa']) ?></td>
+                                                <td><?= htmlspecialchars($fila['direccion_completa']) ?></td>
 
-                                            <td>
-                                                <?php if($fila['id_estado'] == 1): ?>
-                                                <span class="badge bg-label-success">Activo</span>
-                                                <?php else: ?>
-                                                <span class="badge bg-label-danger">Inactivo</span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <a href="ActualizarPaciente.php?id=<?= $fila['id_paciente'] ?>"><i
-                                                            class="fa fa-edit fs-4"></i></a>
-                                                    <form method="POST"
-                                                        action="../../Controller/PacienteController.php">
-                                                        <input type="hidden" name="IDPaciente"
-                                                            value="<?= $fila['id_paciente'] ?>">
-                                                        <input type="hidden" name="EstadoActual"
-                                                            value="<?= $fila['id_estado'] ?>">
-                                                        <button type="submit" name="btnCambiarEstado"
-                                                            class="btn btn-link p-0"><i
-                                                                class="fa fa-refresh fs-4"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                <td>
+                                                    <?php if ($fila['id_estado'] == 1): ?>
+                                                        <span class="badge bg-label-success">Activo</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-label-danger">Inactivo</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="ActualizarPaciente.php?id=<?= $fila['id_paciente'] ?>"><i
+                                                                class="fa fa-edit fs-4"></i></a>
+                                                        <form method="POST"
+                                                            action="../../Controller/PacienteController.php">
+                                                            <input type="hidden" name="IDPaciente"
+                                                                value="<?= $fila['id_paciente'] ?>">
+                                                            <input type="hidden" name="EstadoActual"
+                                                                value="<?= $fila['id_estado'] ?>">
+                                                            <button type="submit" name="btnCambiarEstado"
+                                                                class="btn btn-link p-0"><i
+                                                                    class="fa fa-refresh fs-4"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>

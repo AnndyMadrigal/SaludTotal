@@ -1,120 +1,156 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
-  // Incluimos controladores para cargar las listas
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PacienteController.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PersonalController.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/MedicamentoController.php';
-  // Necesitamos un controlador nuevo para Servicios
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/FacturaController.php'; 
+include_once '../LayoutInterno.php';
+include_once '../../Controller/FacturacionController.php';
 
-  $pacientes = ConsultarPacientes();
-  $medicos = ConsultarPersonal(); // Filtrar solo médicos idealmente
-  $medicamentos = ConsultarMedicamentos();
-  $servicios = ConsultarServicios(); // Debes crear esta función en FacturaController
+$carrito = VerCarrito();
+$pacientes = VerPacientes();
+$sucursales = VerSucursales();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <?php ShowCSS(); ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <body>
     <div class="layout-wrapper layout-content-navbar">
-        <div class="layout-container"> <?php ShowMenu(); ?> <div class="layout-page"> <?php ShowNav(); ?>
+        <div class="layout-container">
+            <?php ShowMenu(); ?>
+            <div class="layout-page">
+                <?php ShowNav(); ?>
+                
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <h5 class="card-header">Agregar al Carrito</h5>
+                                    <div class="card-body">
+                                        <form id="formAgregar">
+                                            <input type="hidden" name="action" value="agregar">
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Tipo</label>
+                                                <select class="form-select" id="cboTipo" name="tipo" required>
+                                                    <option value="">Seleccione...</option>
+                                                    <option value="1">Servicio</option>
+                                                    <option value="2">Medicamento</option>
+                                                </select>
+                                            </div>
 
-                        <form id="formFactura" action="../../Controller/FacturaController.php" method="POST">
+                                            <div class="mb-3">
+                                                <label class="form-label">Item</label>
+                                                <select class="form-select" id="cboItem" name="id_item" disabled required>
+                                                    <option value="">-- Seleccione Tipo --</option>
+                                                </select>
+                                            </div>
 
-                            <div class="card mb-4">
-                                <h5 class="card-header">Nueva Factura</h5>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Paciente</label>
-                                            <select class="form-select" name="IDPaciente" required>
-                                                <option value="">Seleccione...</option>
-                                                <?php foreach($pacientes as $p) echo "<option value='".$p['id_paciente']."'>".$p['nombre']." ".$p['apellido_paterno']."</option>"; ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Médico Tratante</label>
-                                            <select class="form-select" name="IDMedico" required>
-                                                <option value="">Seleccione...</option>
-                                                <?php foreach($medicos as $m) echo "<option value='".$m['id_personal']."'>".$m['nombre']." ".$m['apellido_paterno']."</option>"; ?>
-                                            </select>
-                                        </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Cantidad</label>
+                                                <input type="number" class="form-control" name="cantidad" value="1" min="1" required>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary w-100" onclick="agregarAlCarrito()">
+                                                <i class="fa fa-cart-plus"></i> Agregar
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card mb-4">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Detalle de Factura</h5>
-                                    <button type="button" class="btn btn-primary btn-sm" id="btnAgregarLinea">
-                                        <i class="fa fa-plus"></i> Agregar Línea
-                                    </button>
-                                </div>
-                                <div class="table-responsive text-nowrap">
-                                    <table class="table table-striped" id="tablaDetalles">
-                                        <thead>
-                                            <tr>
-                                                <th width="15%">Tipo</th>
-                                                <th width="35%">Descripción</th>
-                                                <th width="15%">Cantidad</th>
-                                                <th width="15%">Precio Unit.</th>
-                                                <th width="15%">Subtotal</th>
-                                                <th width="5%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbodyDetalles">
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="4" class="text-end"><strong>Subtotal:</strong></td>
-                                                <td><input type="text" class="form-control-plaintext text-end"
-                                                        id="txtSubtotalGeneral" name="SubtotalGeneral" value="0.00"
-                                                        readonly></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4" class="text-end"><strong>IVA (13%):</strong></td>
-                                                <td><input type="text" class="form-control-plaintext text-end"
-                                                        id="txtIVA" name="IVA" value="0.00" readonly></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4" class="text-end"><strong>TOTAL:</strong></td>
-                                                <td><input type="text" class="form-control-plaintext text-end fw-bold"
-                                                        id="txtTotal" name="Total" value="0.00" readonly></td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                            <div class="col-md-8">
+                                <div class="card mb-4">
+                                    <h5 class="card-header">Detalle de Facturación</h5>
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tipo</th>
+                                                    <th>Descripción</th>
+                                                    <th>Cant</th>
+                                                    <th>Precio</th>
+                                                    <th>Subtotal</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                $totalGeneral = 0;
+                                                if($carrito): 
+                                                    foreach($carrito as $row): 
+                                                        $totalGeneral += $row['subtotal'];
+                                                ?>
+                                                <tr>
+                                                    <td><?= $row['tipo'] ?></td>
+                                                    <td><?= $row['nombre_item'] ?></td>
+                                                    <td><?= $row['cantidad'] ?></td>
+                                                    <td>₡ <?= number_format($row['precio_unitario'], 2) ?></td>
+                                                    <td>₡ <?= number_format($row['subtotal'], 2) ?></td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito(<?= $row['id_carrito'] ?>)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; endif; ?>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                                    <td><strong>₡ <?= number_format($totalGeneral, 2) ?></strong></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        
+                                        <hr>
+                                        
+                                        <form action="../../Controller/FacturacionController.php" method="POST">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Paciente</label>
+                                                    <select class="form-select" name="cboPaciente" required>
+                                                        <?php foreach($pacientes as $p): ?>
+                                                            <option value="<?= $p['id_paciente'] ?>">
+                                                                <?= $p['nombre'] . ' ' . $p['apellido_paterno'] ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Sucursal</label>
+                                                    <select class="form-select" name="cboSucursal" required>
+                                                        <?php foreach($sucursales as $s): ?>
+                                                            <option value="<?= $s['id_sucursal'] ?>">
+                                                                <?= $s['nombre'] ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <?php if($totalGeneral > 0): ?>
+                                                <button type="submit" name="btnProcesarPago" class="btn btn-success btn-lg w-100">
+                                                    <i class="fa fa-money-bill"></i> Generar Factura
+                                                </button>
+                                            <?php else: ?>
+                                                <div class="alert alert-warning">Agregue items para facturar</div>
+                                            <?php endif; ?>
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" name="btnGuardarFactura" class="btn btn-success btn-lg">Generar
-                                    Factura</button>
-                            </div>
-
-                        </form>
-
-                    </div> <?php ShowFooter(); ?>
+                    </div>
+                    <?php ShowFooter(); ?>
                 </div>
             </div>
         </div>
-    </div> <?php ShowJS(); ?>
-
-    <div id="listaServicios" style="display:none;">
-        <?php foreach($servicios as $s) echo "<option value='".$s['id_servicio']."'>".$s['nombre']."</option>"; ?>
     </div>
-    <div id="listaMedicamentos" style="display:none;">
-        <?php foreach($medicamentos as $m) echo "<option value='".$m['id_medicamento']."'>".$m['nombre_comercial']." (".$m['presentacion'].")</option>"; ?>
-    </div>
-
-    <script src="../js/Facturacion.js"></script>
-
+    <?php ShowJS(); ?>
+    <script src="../js/carrito.js"></script>
 </body>
-
 </html>

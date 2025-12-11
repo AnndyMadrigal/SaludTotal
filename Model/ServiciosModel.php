@@ -18,7 +18,7 @@ function AgregarServicioModel($nombre, $descripcion, $precio)
         'P_NOMBRE'      => $nombre,
         'P_DESCRIPCION' => $descripcion,
         'P_PRECIO'      => $precio,
-        'P_ID_ESTADO'   => 1 // Activo por defecto
+        'P_ID_ESTADO'   => 1 //Activo por defecto
     ];
     return EjecutarAccionSP(PKG_NAME . "FIDE_SERVICIO_TB_INSERTAR_SP", $params);
 }

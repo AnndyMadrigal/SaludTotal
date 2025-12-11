@@ -34,12 +34,12 @@
         return EjecutarAccionSP(PKG_NAME . "FIDE_PERSONAL_TB_ELIMINAR_SP", $params);
     }
 
-    // Listas para Dropdowns
+    //Listas para Dropdowns
     function ConsultarRolesPersonalModel() {
         return EjecutarRefCursorSP(PKG_NAME . "FIDE_ROL_PERSONAL_TB_LISTAR_SP");
     }
     
-    // Reutilizamos el SP de sucursales que ya tenías
+    //Reutilizamos el SP de sucursales que ya teniamos
     function ConsultarSucursalesListarModel() {
         return EjecutarRefCursorSP(PKG_NAME . "FIDE_SUCURSAL_TB_LISTAR_SP");
     }

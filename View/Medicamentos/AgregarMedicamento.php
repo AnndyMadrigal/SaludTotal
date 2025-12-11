@@ -34,6 +34,14 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
                                         <input type="text" class="form-control" name="Presentacion" placeholder="Ej: Caja 500mg" required />
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label class="form-label">Precio Unitario</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₡</span>
+                                            <input type="number" step="0.01" class="form-control" name="Precio" placeholder="0.00" required />
+                                        </div>
+                                    </div>
+
                                     <div class="d-flex justify-content-end">
                                         <a href="Medicamentos.php" class="btn btn-outline-secondary me-2">Cancelar</a>
                                         <button class="btn btn-primary" name="btnAgregarMedicamento" type="submit">Guardar</button>

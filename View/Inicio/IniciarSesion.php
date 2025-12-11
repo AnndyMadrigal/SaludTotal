@@ -18,7 +18,7 @@
             <div class="card-body">
               <div class="app-brand justify-content-center">
                 <a href="index.html" class="app-brand-link gap-2">
-                  <img src="../img/logo.png" />
+                  <img src="../img/favicon.ico" height="50" width="50"/>
                   <span class="app-brand-text demo text-body fw-bolder">Iniciar Sesión</span>
                 </a>
               </div>

@@ -5,11 +5,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/ServiciosContro
 $id = $_GET["id"];
 $datos = ConsultarServicio($id);
 
-// Validación simple por si el ID no existe
-if (!$datos) {
-    echo "<script>alert('Servicio no encontrado'); window.location.href='Servicios.php';</script>";
-    exit;
-}
 ?>
 
 <!DOCTYPE html>

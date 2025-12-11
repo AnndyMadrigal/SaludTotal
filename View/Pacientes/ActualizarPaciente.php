@@ -2,7 +2,7 @@
   include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
   include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PacienteController.php';
 
-  //Usamos la nueva función FULL que trae IDs de direcciones
+  //usamos la nueva función FULL que trae IDs de direcciones
   $p = ConsultarPacienteFull($_GET["id"]);
   
   if(!$p) header("Location: Pacientes.php");

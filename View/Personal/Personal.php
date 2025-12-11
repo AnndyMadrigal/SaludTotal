@@ -1,7 +1,7 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PersonalController.php';
-  $datos = ConsultarPersonal();
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/PersonalController.php';
+$datos = ConsultarPersonal();
 ?>
 <!DOCTYPE html>
 <html lang="en"> <?php ShowCSS(); ?>
@@ -30,38 +30,38 @@
                                     </thead>
                                     <tbody>
                                         <?php foreach ($datos as $fila): ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($fila['nombre'] . ' ' . $fila['apellido_paterno']) ?>
-                                            </td>
+                                            <tr>
+                                                <td><?= htmlspecialchars($fila['nombre'] . ' ' . $fila['apellido_paterno']) ?>
+                                                </td>
 
-                                            <td><?= htmlspecialchars($fila['nombre_rol']) ?></td>
-                                            <td><?= htmlspecialchars($fila['nombre_sucursal']) ?></td>
+                                                <td><?= htmlspecialchars($fila['nombre_rol']) ?></td>
+                                                <td><?= htmlspecialchars($fila['nombre_sucursal']) ?></td>
 
-                                            <td><?= date('d/m/Y', strtotime($fila['fecha_contratacion'])) ?></td>
-                                            <td>
-                                                <?php if($fila['id_estado'] == 1): ?>
-                                                <span class="badge bg-label-success">Activo</span>
-                                                <?php else: ?>
-                                                <span class="badge bg-label-danger">Inactivo</span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <a href="ActualizarPersonal.php?id=<?= $fila['id_personal'] ?>"><i
-                                                            class="fa fa-edit fs-4"></i></a>
-                                                    <form method="POST"
-                                                        action="../../Controller/PersonalController.php">
-                                                        <input type="hidden" name="IDPersonal"
-                                                            value="<?= $fila['id_personal'] ?>">
-                                                        <input type="hidden" name="EstadoActual"
-                                                            value="<?= $fila['id_estado'] ?>">
-                                                        <button type="submit" name="btnCambiarEstado"
-                                                            class="btn btn-link p-0"><i
-                                                                class="fa fa-refresh fs-4"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                <td><?= date('d/m/Y', strtotime($fila['fecha_contratacion'])) ?></td>
+                                                <td>
+                                                    <?php if ($fila['id_estado'] == 1): ?>
+                                                        <span class="badge bg-label-success">Activo</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-label-danger">Inactivo</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="ActualizarPersonal.php?id=<?= $fila['id_personal'] ?>"><i
+                                                                class="fa fa-edit fs-4"></i></a>
+                                                        <form method="POST"
+                                                            action="../../Controller/PersonalController.php">
+                                                            <input type="hidden" name="IDPersonal"
+                                                                value="<?= $fila['id_personal'] ?>">
+                                                            <input type="hidden" name="EstadoActual"
+                                                                value="<?= $fila['id_estado'] ?>">
+                                                            <button type="submit" name="btnCambiarEstado"
+                                                                class="btn btn-link p-0"><i
+                                                                    class="fa fa-refresh fs-4"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>

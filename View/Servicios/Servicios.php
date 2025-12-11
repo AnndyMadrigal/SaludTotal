@@ -23,7 +23,7 @@ $datos = ConsultarServicios();
                                 <a class="btn btn-outline-primary position-absolute end-0 me-3" href="AgregarServicio.php">Agregar</a>
                             </div>
                             <div class="card-body">
-                                <table id="tServicios" class="table table-hover">
+                                <table id="tServicios" class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -53,14 +53,23 @@ $datos = ConsultarServicios();
 
                                                     <td>
                                                         <div class="d-flex gap-2">
-                                                            <a href="ActualizarServicio.php?id=<?= $fila['id_servicio'] ?>" title="Editar">
-                                                                <i class="fa fa-edit" style="font-size:22px;"></i>
+
+                                                            <?php if ($fila['id_estado'] == 1): ?>
+                                                                <form method="POST" action="../../Controller/CarritoController.php" style="margin:0;">
+                                                                    <input type="hidden" name="id_servicio" value="<?= $fila['id_servicio'] ?>">
+                                                                    <button type="submit" name="btnAgregarServicio" class="btn btn-sm btn-success" title="Agregar al Carrito">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </button>
+                                                                </form>
+                                                            <?php endif; ?>
+                                                            <a href="ActualizarServicio.php?id=<?= $fila['id_servicio'] ?>" title="Editar" class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa fa-edit" style="font-size:18px;"></i>
                                                             </a>
 
                                                             <form method="POST" action="../../Controller/ServiciosController.php" style="margin:0;">
                                                                 <input type="hidden" name="IDServicio" value="<?= $fila['id_servicio'] ?>">
                                                                 <input type="hidden" name="EstadoActual" value="<?= $fila['id_estado'] ?>">
-                                                                <button type="submit" name="btnCambiarEstado" class="btn btn-link p-0 text-primary" title="Cambiar Estado">
+                                                                <button type="submit" name="btnCambiarEstado" class="btn btn-sm btn-link p-0 text-primary" title="Cambiar Estado">
                                                                     <i class="fa fa-refresh" style="font-size:22px;"></i>
                                                                 </button>
                                                             </form>

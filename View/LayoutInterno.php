@@ -59,7 +59,7 @@ function ShowMenu()
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="../Inicio/Principal.php" class="app-brand-link">
-              <img src="../img/logo.png">
+              <img src="../img/favicon.ico" height="50" width="50">
               <span class="app-brand-text demo menu-text fw-bolder ms-2">Salud Total</span>
             </a>
 
@@ -118,6 +118,20 @@ function ShowMenu()
                     <i class="menu-icon tf-icons bx bx-warehouse"></i> 
                     <div data-i18n="Inventario">Inventario</div>
                   </a>
+                </li>
+                
+                <li class="menu-item">
+                  <a href="../Carrito/MiCarrito.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-cart"></i> 
+                    <div data-i18n="Carrito">Mi Carrito</div>
+                  </a>
+                </li>
+                
+                <li class="menu-item">
+                  <a href="../Facturacion/MisFacturas.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-receipt"></i> 
+                    <div data-i18n="Carrito">Facturas</div>
+                  </a>
                 </li>';
   } else {
     echo '
@@ -145,7 +159,6 @@ function ShowMenu()
 function ShowNav()
 {
   $nombre = "";
-  $nombrePerfil = "";
 
   if (isset($_SESSION["NombreUsuario"])) {
     $nombre = $_SESSION["NombreUsuario"];
@@ -237,9 +250,9 @@ function ShowFooter()
 ?>
 
 <script>
-window.addEventListener("pageshow", function(event) {
+  window.addEventListener("pageshow", function(event) {
     if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-        window.location.reload(true);
+      window.location.reload(true);
     }
-});
+  });
 </script>

@@ -1,8 +1,8 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/SucursalController.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Controller/SucursalController.php';
 
-  $resultado = ConsultarSucursales();
+$resultado = ConsultarSucursales();
 ?>
 
 <!DOCTYPE html>
@@ -42,46 +42,46 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php 
-                                                    foreach ($resultado as $fila): 
+                                                <?php
+                                                foreach ($resultado as $fila):
                                                 ?>
-                                                <tr>
-                                                    <td><?= $fila['id_sucursal'] ?></td>
-                                                    <td><?= htmlspecialchars($fila['nombre']) ?></td>
+                                                    <tr>
+                                                        <td><?= $fila['id_sucursal'] ?></td>
+                                                        <td><?= htmlspecialchars($fila['nombre']) ?></td>
 
-                                                    <td><?= htmlspecialchars($fila['direccion_completa']) ?></td>
+                                                        <td><?= htmlspecialchars($fila['direccion_completa']) ?></td>
 
-                                                    <td><?= $fila['telefono'] ?></td>
+                                                        <td><?= $fila['telefono'] ?></td>
 
-                                                    <td>
-                                                        <?php if($fila['id_estado'] == 1): ?>
-                                                        <span class="badge bg-label-success">Activo</span>
-                                                        <?php else: ?>
-                                                        <span class="badge bg-label-danger">Inactivo</span>
-                                                        <?php endif; ?>
-                                                    </td>
+                                                        <td>
+                                                            <?php if ($fila['id_estado'] == 1): ?>
+                                                                <span class="badge bg-label-success">Activo</span>
+                                                            <?php else: ?>
+                                                                <span class="badge bg-label-danger">Inactivo</span>
+                                                            <?php endif; ?>
+                                                        </td>
 
-                                                    <td>
-                                                        <div style="display:flex; align-items:center; gap:10px;">
-                                                            <a
-                                                                href="ActualizarSucursal.php?id=<?= $fila['id_sucursal'] ?>">
-                                                                <i class="fa fa-edit" style="font-size:22px;"></i>
-                                                            </a>
-                                                            <form method="POST" action=""
-                                                                style="margin:0; display:inline;">
-                                                                <input type="hidden" name="ConsecutivoSucursal"
-                                                                    value="<?= $fila['id_sucursal'] ?>">
-                                                                <input type="hidden" name="EstadoActual"
-                                                                    value="<?= $fila['id_estado'] ?>">
-                                                                <button type="submit" name="btnCambiarEstado"
-                                                                    style="background:none; border:none; color:#0d6efd; cursor:pointer; padding:0;">
-                                                                    <i class="fa fa-refresh"
-                                                                        style="font-size:22px;"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        <td>
+                                                            <div style="display:flex; align-items:center; gap:10px;">
+                                                                <a
+                                                                    href="ActualizarSucursal.php?id=<?= $fila['id_sucursal'] ?>">
+                                                                    <i class="fa fa-edit" style="font-size:22px;"></i>
+                                                                </a>
+                                                                <form method="POST" action=""
+                                                                    style="margin:0; display:inline;">
+                                                                    <input type="hidden" name="ConsecutivoSucursal"
+                                                                        value="<?= $fila['id_sucursal'] ?>">
+                                                                    <input type="hidden" name="EstadoActual"
+                                                                        value="<?= $fila['id_estado'] ?>">
+                                                                    <button type="submit" name="btnCambiarEstado"
+                                                                        style="background:none; border:none; color:#0d6efd; cursor:pointer; padding:0;">
+                                                                        <i class="fa fa-refresh"
+                                                                            style="font-size:22px;"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 <?php endforeach; ?>
 
                                             </tbody>

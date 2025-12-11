@@ -1,21 +1,7 @@
 <?php
     include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/Model/UtilesModel.php';
 
-    function CrearCuentaModel($identificacion,$nombre,$correoElectronico,$contrasenna)
-    {
-        try
-        {
-            $context = OpenConnection();
-            CloseConnection($context);
-            return false; 
-        }
-        catch(Exception $error)
-        {
-            return false;
-        }
-    }
-
-    // FUNCIÓN DE LOGIN
+    //FUNCIÓN DE LOGIN
     function ValidarCuentaModel($usuario, $contrasenna)
     {
         $conn = OpenConnection(); 
@@ -30,7 +16,7 @@
         //Crear el cursor de salida para Oracle
         $cursor = oci_new_cursor($conn);
 
-        //Vincular el parámetro
+        //Vincular el parametro
         oci_bind_by_name($stmt, ':p_cursor', $cursor, -1, OCI_B_CURSOR);
 
         //Ejecutar la sentencia
@@ -53,7 +39,7 @@
             $correoBD = isset($row['NOMBRE_USUARIO']) ? $row['NOMBRE_USUARIO'] : ''; 
             $passBD   = isset($row['CONTRASENNA']) ? $row['CONTRASENNA'] : '';
             
-            // usamos trim por si oracle devuelve espacios vacios
+            //usamos trim por si oracle devuelve espacios vacios
             if (trim($correoBD) === $usuario) {
                 if (trim($passBD) === $contrasenna) {
                     $usuarioEncontrado = $row;
@@ -69,10 +55,5 @@
 
         return $usuarioEncontrado;
     }
-
-    function ActualizarContrasennaModel($ConsecutivoUsuario, $ContrasennaGenerada)
-    {
-        // Pendiente
-        return false;
-    }
+    
 ?>

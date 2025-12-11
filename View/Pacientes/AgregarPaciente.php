@@ -1,5 +1,5 @@
 <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/SaludTotal/View/LayoutInterno.php';
 ?>
 <!DOCTYPE html>
 <html lang="en"> <?php ShowCSS(); ?>
@@ -71,7 +71,7 @@
         </div>
     </div> <?php ShowJS(); ?>
 
-    <script src="../js/agregarDireccion.js">    </script>
+    <script src="../js/agregarDireccion.js"> </script>
 
 </body>
 
